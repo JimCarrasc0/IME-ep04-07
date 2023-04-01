@@ -64,7 +64,7 @@ tamaño0<- length(polloPeso_Soya0)
 diferencia = polloPeso_Soya16 - polloPeso_Soya0
 normalidad <- shapiro.test( diferencia )
 print( normalidad )
-
+print(diferencia)
 # Como p-value > alfa sigue distribución normal, entonces se continua con la prueba
 # t de student
 
@@ -72,20 +72,21 @@ print( normalidad )
 alfa <- 0.05
 
 # Hipotesis:
-# H0:Los pollos alimentados con soya a los 16 días tendrán PESO = 169,5
-# HA:Los pollos alimentados con soya a los 16 días tendrán PESO != 169,5
+# H0:Los pollos alimentados con soya a los 16 días tendrán aumento de PESO >= 169,5
+# HA:Los pollos alimentados con soya a los 16 días tendrán aumento de PESO < 169,5
 
 h0 <- 169.5
 
 prueba_t16 <- t.test ( diferencia ,
-                          alternative = "two.sided",
+                          alternative = "less",
                           mu = h0 ,
                           conf.level = 1 - alfa )
 print (prueba_t16)
 
 # Como la media de la diferencias esta dentro del intervalo de  confianza
-# y ademas el p-value es mayor que el nivel de significación, entonces se falla
-# al rechazar H0
+# y ademas el p-value es mayor que el nivel de significación, entonces se 
+# rechaza H0 a favor de HA, por lo tanto se puede inferir con un 95% de confianza 
+# que el aumento de peso promedio de los pollitos alimentados con soya es menor a 169,5 g
 
 ######################################################################
 
@@ -98,8 +99,6 @@ polloPeso_Linaza <- pollitos[pollitos$DIETA == "Linaza" & pollitos$DIA == "10",]
 tamañoHaba<- length(polloPeso_Haba)
 tamañoLinaza<- length(polloPeso_Linaza)
 
-print(tamañoHaba)
-print(tamañoLinaza)
 
 # Dado que el tamaño de las muestras son pequeñas podemos utilizar la prueba T de student
 # Ahora debemos de comprobar las condiciones para saber si podemos utilizar la prueba
