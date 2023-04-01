@@ -49,28 +49,26 @@ print(prueba.t)
 # 2. ¿Sugieren los datos que, en promedio, los pollitos alimentados con soya aumentan su peso en más de 169,5
 # gramos a 16 días desde su nacimiento?
 
-polloPeso_Soya16 <- pollitos[pollitos$DIETA == "Soya" & pollitos$DIA == "16",][["PESO"]]
-print(polloPeso_Soya16)
-tamaño<- length(polloPeso_Soya16)
-print(tamaño)
-
 # Como son solo 10 pollos los que se tienen para la prueba, se utilizará la prueba T de student
 # Verificamos si la muestra cumple las condiciones para poder aplicar la prueba T de student
 # Por tanto, como la muestra se trata de diferentes pollitos, se puede asumir que las observaciones
 # son independientes. Se tiene también que verificar si las observaciones siguen una distribución normal, por lo tanto
 # podemos utilizar shapiro-wilk para poder verificar esto
 
-# normalSoya <- shapiro.test(polloPeso_Soya16)
-gggggggg <- ggqqplot(polloPeso_Soya16)
-print(gggggggg)
+polloPeso_Soya16 <- pollitos[pollitos$DIETA == "Soya" & pollitos$DIA == "16",][["PESO"]]
+tamaño16<- length(polloPeso_Soya16)
 
-#######################################################################################
-#  Puse un gráfico pq no entiendo bien con la prueba de shapiroxd, de ahí lo cambian  #
-#######################################################################################
+polloPeso_Soya0 <- pollitos[pollitos$DIETA == "Soya" & pollitos$DIA == "0",][["PESO"]]
+tamaño0<- length(polloPeso_Soya0)
 
-# Dado que mediante el gráfico se puede observar que la muestra sigue una distribución normal, se continuará
-# con la prueba T de Student, fijamos un nivel de significación
+diferencia = polloPeso_Soya16 - polloPeso_Soya0
+normalidad <- shapiro.test( diferencia )
+print( normalidad )
 
+# Como p-value > alfa sigue distribución normal, entonces se continua con la prueba
+# t de student
+
+# Fijar un nivel de significación.
 alfa <- 0.05
 
 # Hipotesis:
@@ -78,9 +76,16 @@ alfa <- 0.05
 # HA:Los pollos alimentados con soya a los 16 días tendrán PESO != 169,5
 
 h0 <- 169.5
-pruebaSoya <- t.test(polloPeso_Soya16, alternative = "two.sided", mu = h0, conf.level =  1 - alfa)
-print(pruebaSoya)
-# prueba.t <- t.test(polloPeso_Soya16, "two.sided",  h0,  1-alfa)
+
+prueba_t16 <- t.test ( diferencia ,
+                          alternative = "two.sided",
+                          mu = h0 ,
+                          conf.level = 1 - alfa )
+print (prueba_t16)
+
+# Como la media de la diferencias esta dentro del intervalo de  confianza
+# y ademas el p-value es mayor que el nivel de significación, entonces se falla
+# al rechazar H0
 
 ######################################################################
 
