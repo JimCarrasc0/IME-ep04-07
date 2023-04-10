@@ -33,7 +33,7 @@ puntos <- 1000
 x <- seq(valor.nulo-5, valor.nulo+5,length.out = puntos)
 densidad.prob <- dnorm(x, mean = valor.nulo, sd = err.est)
 distr.normal <-data.frame(x,densidad.prob)
-grafico <- ggplot(distr.normal, aes(x,densidad.prob)) + geom_line(color="blue") + ylab("")
+grafico <- ggplot(distr.normal, aes(x,densidad.prob)) + geom_line(color="blue") + ylab("")+ scale_y_continuous(breaks = NULL)
 grafico <- grafico + geom_area(data = subset(data.frame(x,densidad.prob), x < 108),
                          aes(y=densidad.prob),
                          colour = "red",
