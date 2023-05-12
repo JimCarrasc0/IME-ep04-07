@@ -94,6 +94,47 @@ print(beta)
 
 cat("La probabilidad de cometer un error de Tipo II es de: ", beta, "% \n\n")
 
+# Pregunta 3
+# Teniendo en cuenta que en realidad no se conoce el verdadero peso medio, genere ahora un gráfico del
+# poder teniendo en cuenta que el agricultor piensa rechazar la hipótesis nula si la muestra presenta un peso
+# medio menor a 109 gramos, pero suponiendo ahora que el peso volumen medio podría variar entre 108 y
+# 110 gramos.
+
+#x3 <- seq(108, 110,length.out = 300)
+#Preguntar al mati pq 1000 y no 300, no sale en los comentarios el pq, en el enunciado dice 300.}
+
+# Generar la secuencia aleatoria de números
+x3 <- runif(300, min = 108, max = 110)
+
+# Ajustar la media y la desviación estándar
+x3 <- (x3 - mean(x3)) / sd(x3) * 15 + mean(x3)
+
+
+media3 <- mean(x3)
+# poder3=pwr.norm.test(n=300,
+#                     delta=x3,
+#                     sd=15,
+#                     sig.level=0.05,
+#                     type="one.sample",
+#                     alternative = "two.sided")$power
+# poder3 = pwr.norm.test(d=((media3-109)/des.est), sig.level =0.05, power = 0.8, alternative = "less")
+poder3 <- power.t.test(n=x3, 
+                       delta=media3-109, 
+                       sd=des.est,
+                       sig.level = 0.05, 
+                       type = "one.sample", 
+                       alternative = "two.sided" )$power
+
+pow3 <- data.frame(x3,poder3)
+
+g3 <- ggplot(pow3,aes(x3,poder3))
+g3 <- g3 + geom_line ()
+g3 <- g3 + labs ( colour = "red" )
+g3 <- g3 + ylab ( " Poder estad í stico " )
+g3 <- g3 + xlab ( " Tama ñ o del efecto " )
+
+print(g3)
+
 
 #Pregunta 4
 #Considerando un peso medio verdadero de 109 gramos, calcule usando funciones de R 
