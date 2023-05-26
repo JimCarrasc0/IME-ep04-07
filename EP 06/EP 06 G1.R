@@ -22,8 +22,8 @@ datos <- data.frame(
 
 #Formular hipotesis
 
-#H0 : Proporción de mujeres que son fanáticas moderadas más del 30% (p>=0.3)
-#HA : Proporción de mujeres que son fanáticas moderadas es menos del 30% (p<0.3)
+#H0 : Proporción de mujeres que son fanáticas moderadas más del 30% (p=0.3)
+#HA : Proporción de mujeres que son fanáticas moderadas es menos del 30% (p>0.3)
 
 #Datos
 
@@ -47,11 +47,11 @@ cat("\nCasos donde las mujeres son fanáticas moderadas: ",exitos.esperados,"\nC
 #Procedemos con el metodo de Wilson y fijamos un nivel de significación de 0.05
 
 prueba.p1 <- prop.test(x=mujeres.moderada, n = n, p = valor.nulo,
-                       alternative="less", conf.level = 0.95, correct = FALSE)
+                       alternative="greater", conf.level = 0.95, correct = FALSE)
 
 print(prueba.p1)
 
-#Dado que el valor p=0.976 obtenido fallamos al rechazar la hipotesis nula
+#Dado que el valor p=0.02351 se rechaza la hipotesis nula en favor de la hipotesis alternativa
 #De esta forma podemos concluir con un 95% de confianza que más del 30% de las mujeres son fanáticas moderadas de Star Wars
 
 
@@ -61,12 +61,14 @@ print(prueba.p1)
 #Inferencia sobre dos proporciones por tanto podemos seguir ocupando Wilson
 
 #Hipotesis
-#Hipotesis Nula: La proporción de fanáticos extremos es menor en mujeres que en hombres (p1 - p2 <= 0)
-#Hipotesis Alternativa: la proporción de fanáticos extremos es mayor en mujeres que en hombres (p1 - p2 >0)
+#Hipotesis Nula: La proporción de fanáticos extremos es menor en mujeres que en hombres (p1 - p2 = 0)
+#Hipotesis Alternativa: la proporción de fanáticos extremos es mayor en mujeres que en hombres (p1 - p2 < 0)
 
 mujeres.extremos <- datos[["Mujeres"]][1]
 hombres.extremos <-datos[["Hombres"]][1]
 n.extremos <- datos[["Hombres"]][1] + datos[["Mujeres"]][1]
+n.h <- datos[["Hombres"]][1] +  datos[["Hombres"]][2] + datos[["Hombres"]][3]
+
 
 #Verificamos si se cumplen las condiciones iniciales para poder utilizar el metodo de Wilson o Wald
 #Observaciones independientes y condicion de exito-fracaso
@@ -82,12 +84,12 @@ cat("\nExitos: ",exitos.extremos,"\nFracasos: ", fracasos.extremos)
 #Procedemos con el metodo de Wilson y fijamos un nivel de significación de 0.05
 
 prueba.p2 <- prop.test(x = c(mujeres.extremos, hombres.extremos),
-                      n = c(n.extremos, n.extremos),
-                      alternative = "greater", conf.level = 0.95,
+                      n = c(n, n.h),
+                      alternative = "less", conf.level = 0.95,
                       correct = FALSE)
 
 print(prueba.p2)
 
-#Dado el p-valor = 1 es que se falla al rechazar la hipotesis nula
-#por tanto con un 95% de confianza podemos afirmar que la proporcion de mujeres que son fanaticas extreamas 
+#Dado el p-valor = 1.344e-13 se rechaza la hipotesis nula en favor de la hipotesis alternativa
+#por tanto con un 95% de confianza podemos afirmar que la proporcion de mujeres que son fanaticas extremas 
 #es menor que la proporcion de hombres que son fanaticos extremos
