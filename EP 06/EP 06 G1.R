@@ -74,9 +74,13 @@ n.h <- datos[["Hombres"]][1] +  datos[["Hombres"]][2] + datos[["Hombres"]][3]
 #Observaciones independientes y condicion de exito-fracaso
 #Para el caso de las observaciones, supones que son independientes
 #Ahora se procede a verificar la condicion de exito-fracaso
+prop_hombres <- prop.table(datos$Hombres)[1]
+prop_mujeres <- prop.table(datos$Mujeres)[1]
+valor.nulo <- prop_hombres
 
 exitos.extremos <- n.extremos * valor.nulo
 fracasos.extremos <- n.extremos * (1-valor.nulo)
+
 
 cat("\nExitos: ",exitos.extremos,"\nFracasos: ", fracasos.extremos)
 
@@ -93,3 +97,26 @@ print(prueba.p2)
 #Dado el p-valor = 1.344e-13 se rechaza la hipotesis nula en favor de la hipotesis alternativa
 #por tanto con un 95% de confianza podemos afirmar que la proporcion de mujeres que son fanaticas extremas 
 #es menor que la proporcion de hombres que son fanaticos extremos
+
+# Pregunta 3
+# Existe la creencia de que hay más fanáticos extremos entre los hombres que entre las mujeres y que dicha
+# diferencia supera el 25%. ¿A cuántas personas (hombres y mujeres) se debería encuestar para obtener un
+# intervalo de confianza del 95% y poder estadístico de 95%, si se intenta mantener aproximadamente la
+# misma proporción de gente estudiada en cada caso?
+
+library(pwr)
+
+diferencia_minima <- 0.25
+
+# Nivel de confianza (95%)
+confianza <- 0.95
+
+# Poder estadístico (95%)
+poder <- 0.95
+
+# Cálculo del tamaño de muestra necesario
+muestra <- power.prop.test(p1 = prop_hombres, p2 = prop_hombres + diferencia_minima, 
+                           power = poder, sig.level = 1 - confianza,
+                           alternative = "two.sided")$n
+
+cat("La cantidad mínima es de:", ceiling(muestra), "personas\n")
