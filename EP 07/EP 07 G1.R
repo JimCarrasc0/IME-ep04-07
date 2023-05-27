@@ -36,7 +36,7 @@ prueba.p1<- fisher.test(tabla,conf.level = 0.95)
 print(prueba.p1)
 
 #Dado el p-valor = 0.4059 se rechaza la hiptesis nula en favor de la hipotesis alternativa
-##De esta forma podemos concluir con un 95% de confianza que el rango etario si influye en la preferencia por Harry Potter
+#De esta forma podemos concluir con un 95% de confianza que el rango etario si influye en la preferencia por Harry Potter
 
 #Pregunta 2
 
@@ -69,4 +69,30 @@ print(prueba.p2)
 
 #Dado el p-valor = 0.000306 se rechaza la hiptesis nula en favor de la hipotesis alternativa
 #De esta forma podemos concluir con un 95% de confianza que el interes por la serie Star Trek
-#
+
+
+# Pregunta 3
+# Minerva McGonagall, actual directora del Colegio Hogwarts de Magia y Hechicería, está haciendo 
+# un seguimiento de las actividades laborales y académicas de los egresados más recientes del colegio.
+# Desea saber si la casa a la que pertenecían los egresados está relacionada con un posterior empleo 
+# en el Ministerio de Magia. ¿Qué puede inferir a partir de los siguientes datos?
+#            Ravenclaw Slytherin Hufflepuff Gryffindor 
+# Ministerio 45        44        21         31 
+# Otro       91        95        87         134 
+
+# Para esta pregunta se utilizara la prueba xi cuadrado de pearson de homogeneidad con un nivel de
+# confianza p < 0.05:
+# H0 = No existe relacion entre la casa de estudios y el posterior empleo en el ministerio de magia.
+# HA = Existe relacion entre la casa de estudios y el posterior empleo en el ministerio de magia.
+
+ministerio <- c(45, 44, 21, 31)
+otro <- c(91, 95, 87, 134)
+tabla_hogwards <- matrix(c(ministerio, otro), nrow = 2)
+rownames(tabla_hogwards) <- c("Ministerio", "Otro")
+colnames(tabla_hogwards) <- c("Ravenclaw", "Slytherin", "Hufflepuff", "Gryffindor")
+print(tabla_hogwards)
+resultado <- chisq.test(tabla_hogwards)
+print(resultado)
+
+# Dado que p = 0.1379 se falla al rechazar la hipotesis nula, por lo que podemos concluir con un
+# que no existe relacion entre la casa de estudios y el posterior empleo en el ministerio de magia.

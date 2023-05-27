@@ -1,4 +1,7 @@
-
+if (!require ( pwr )) {
+  install.packages ("pwr" , dependencies=TRUE)
+  require (pwr)
+}
 library(dplyr)
 library(ggpubr)
 library(pwr)

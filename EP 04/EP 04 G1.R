@@ -1,4 +1,11 @@
-
+if (!require ( dplyr )) {
+  install.packages ("dplyr" , dependencies=TRUE)
+  require (dplyr)
+}
+if (!require ( ggpubr )) {
+  install.packages ("ggpubr" , dependencies=TRUE)
+  require (ggpubr)
+}
 library(dplyr)
 library(ggpubr)
 # Grupo número 1
