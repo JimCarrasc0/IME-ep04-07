@@ -1,6 +1,8 @@
 library(tidyverse) 
 library(RVAideMemoire) 
 library(rcompanion)
+library(dplyr)
+
 # Ejercicio N°7
 # Grupo número 1 
 # Integrante Jaime Alejandro Carrasco Quintrequeo 
@@ -125,11 +127,14 @@ muestra <- muestra %>% pivot_longer(c("Pociones","Defensa","Transformaciones", "
                               names_to="Asignaturas", 
                               values_to="resultado")
 
-muestra[["id"]]<-factor(muestra[["id"]]) 
+muestra[["Id"]]<-factor(muestra[["Id"]]) 
 muestra[["Asignaturas"]]<-factor(muestra[["Asignaturas"]])
 
 #Hacer prueba Q de Cochran. 
-prueba<-cochran.qtest(resultado~Asignaturas|id, 
-                      muestra=muestra,alpha=0.05)
+prueba<-cochran.qtest(resultado~Asignaturas|Id, 
+                      data=muestra,alpha=0.05)
 
 print(prueba)
+
+# Dado que p<alpha, se rechaza la hipótesis nula en favor de la alternativa,
+# con un 95% de confianza. Es decir, el desempeño es diferente para las asignaturas escenciales.
